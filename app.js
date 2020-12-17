@@ -8,10 +8,22 @@ class Player {
             this.x = canvas.width * 0.15;
         } else if (id == 1) {
             this.x = canvas.width * 0.85;
-        } else {
-            alert("Aw rip. An unknown error has occured... That's all we know!");
         }
         this.y = canvas.height / 2;
+        this.movingUp = false;
+        this.movingDown = false;
+    }
+    stopMoving() {
+        this.movingUp = false;
+        this.movingDown = false;
+    }
+    startDown() {
+        this.stopMoving();
+        this.movingDown = true;
+    }
+    startUp() {
+        this.stopMoving();
+        this.movingUp = true;
     }
 }
 
@@ -69,14 +81,49 @@ function paddleDetection() {
     }
 }
 
+function keyDownHandler(e) {
+    if (e.key == "W" || e.key == "w") {
+        players[0].startUp();
+    } else if (e.key == "S" || e.key == "s") {
+        players[0].startDown();
+    } else if (e.key == "I" || e.key == "i") {
+        players[1].startUp();
+    } else if (e.key == "K" || e.key == "k") {
+        players[1].startDown();
+    }
+}
+
+function keyUpHandler(e) {
+    if (e.key == "W" || e.key == "w" || e.key == "S" || e.key == "s") {
+        players[0].stopMoving();
+    } else if (e.key == "I" || e.key == "i" || e.key == "K" || e.key == "k") {
+        players[1].stopMoving();
+    }
+}
+
+function movement() {
+    x += dx;
+    y += dy;
+    for (var i = 0; i < 2; i++) {
+        if (players[i].movingUp) {
+            players[i].y -= 7.5;
+        }
+        if (players[i].movingDown) {
+            players[i].y += 7.5;
+        }
+    }
+}
+
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBall();
     drawPaddles();
-    x += dx;
-    y += dy;
+    movement();
     wallDetection();
     paddleDetection();
 }
+
+document.addEventListener("keydown", keyDownHandler);
+document.addEventListener("keyup", keyUpHandler);
 
 var interval = setInterval(draw, speed);
