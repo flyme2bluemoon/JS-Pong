@@ -34,7 +34,7 @@ if (Math.floor(Math.random() * 2)) {
 } else {
     dx = Math.random() * -2 - 1;
 }
-var dx = 2;
+var dy = 2;
 
 function drawPaddles() {
     for (var i = 0; i < players.length; i++) {
@@ -54,10 +54,22 @@ function drawBall() {
     ctx.closePath();
 }
 
+function wallDetection() {
+    if (x + dx > canvas.width - ballRadius || x + dx < 0 + ballRadius) {
+        dx = -dx
+    }
+    if (y + dy > canvas.height - ballRadius || y + dy < 0 + ballRadius) {
+        dy = -dy
+    }
+}
+
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBall();
     drawPaddles();
+    x += dx;
+    y += dy;
+    wallDetection();
 }
 
 var interval = setInterval(draw, speed);
