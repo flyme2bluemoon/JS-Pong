@@ -56,10 +56,16 @@ function drawBall() {
 
 function wallDetection() {
     if (x + dx > canvas.width - ballRadius || x + dx < 0 + ballRadius) {
-        dx = -dx
+        dx = -dx;
     }
     if (y + dy > canvas.height - ballRadius || y + dy < 0 + ballRadius) {
-        dy = -dy
+        dy = -dy;
+    }
+}
+
+function paddleDetection() {
+    if (((x + dx > players[1].x - paddleWidth) && (y < players[1].y + paddleHeight / 2 && y > players[1].y - paddleHeight / 2)) || ((x + dx < players[0].x + paddleWidth) && (y < players[0].y + paddleHeight / 2 && y > players[0].y - paddleHeight / 2))) {
+        dx = -dx;
     }
 }
 
@@ -70,6 +76,7 @@ function draw() {
     x += dx;
     y += dy;
     wallDetection();
+    paddleDetection();
 }
 
 var interval = setInterval(draw, speed);
