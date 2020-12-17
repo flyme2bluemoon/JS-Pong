@@ -105,10 +105,10 @@ function movement() {
     x += dx;
     y += dy;
     for (var i = 0; i < 2; i++) {
-        if (players[i].movingUp) {
+        if (players[i].movingUp && players[i].y - 7.5 > 0) {
             players[i].y -= 7.5;
         }
-        if (players[i].movingDown) {
+        if (players[i].movingDown && players[i].y + 7.5 < canvas.height) {
             players[i].y += 7.5;
         }
     }
